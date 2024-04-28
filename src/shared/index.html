@@ -1,0 +1,79 @@
+<div id="gl[+iteration+]" class="report-item">
+    <div class="preview"
+        >[[tvideo? &amp;t=`[+template+]`]]
+        <a
+            class="pic"
+            style="width: 342px; height: 177px"
+            title="[+pagetitle+]"
+            href="[~[+id+]~]"
+        >
+            <img
+                title="[+pagetitle+]"
+                src="[[phpthumb? &amp;input=&#96;[+tv.img+]&#96; &amp;options=&#96;w=342&amp;h=177&amp;zc=1&amp;bg=FFFFFF&#96;]]"
+                alt="[+pagetitle+]"
+                width="342"
+                height="177"
+            /> </a
+    ></div>
+    <h3><a href="[~[+id+]~]">[+pagetitle+]!!</a></h3>
+    <div class="meta-line"
+        ><span class="date"> [[daterus? &amp;MyDate=`[+pub_date+]`]] </span>
+        <span class="time">[[daterss_time? &amp;MyDate=`[+pub_date+]`]]</span>
+        [[texclusiveV? &amp;t=`[+tv.video1+]`]] [[texclusiveV3?
+        &amp;t=`[+tv.gal+]` ]]
+        <a
+            class="comments"
+            title="Оставить новый комментарий"
+            href="[~[+id+]~]#comments"
+            rel="nofollow"
+            >Комментариев
+        </a>
+        <div
+            class="hyper hyper3 cackle-comment-count"
+            style="
+                color: #eb7f00;
+                width: 21px;
+                display: block;
+                overflow: hidden;
+                height: 14px;
+                text-align: center;
+                float: left;
+                text-decoration: none;
+                margin-top: 0px;
+            "
+            data-xid="[(site_url)][~[+id+]~]"
+            data-cackle-url="[(site_url)][~[+id+]~]"
+            >&nbsp;</div
+        >
+    </div>
+</div>
+
+<div class="main-new">
+    <img
+        title="[+pagetitle+]"
+        src="[[phpthumb? &amp;input=&#96;[+tv.img+]&#96; &amp;options=&#96;w=342&amp;h=177&amp;zc=1&amp;bg=FFFFFF&#96;]]"
+        alt="[+pagetitle+]"
+        class="main-new-img"
+    />
+    <h2 class="main-new-title link">
+        <a href="[~[+id+]~]">[+pagetitle+]</a>
+    </h2>
+    <div class="flex additional-info">
+        <span style="color: #8c8c8c"
+            >[[daterus? &amp;MyDate=`[+pub_date+]`]]</span
+        >
+        <span class="text-[#EB7813]"
+            >[[daterss_time? &amp;MyDate=`[+pub_date+]`]]</span
+        >
+        <img src="assets/img/comments.svg" alt="" />
+        <a
+            class="link text-[#EB7813] ml-1"
+            title="Оставить новый комментарий"
+            href="[~[+id+]~]#comments"
+            >Комментарии [[texclusiveV? &amp;t=`[+tv.video1+]`]] [[texclusiveV3?
+            &amp;t=`[+tv.gal+]` ]]</a
+        >
+    </div>
+</div>
+
+report_tpl_new2

@@ -1,0 +1,10 @@
+@import "shared/styles/variables";
+
+.line {
+  padding: 0;
+  margin: 0;
+  height: 0;
+  border: none;
+  border-top: 1px solid $sidebarHoverColor;
+  flex: 1 1 auto;
+}

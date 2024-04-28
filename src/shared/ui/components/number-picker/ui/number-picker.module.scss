@@ -1,0 +1,30 @@
+
+
+.numberPicker {
+  height: 50px;
+  width: 320px;
+  display: flex;
+  align-items: center;
+  
+}
+
+.marks {
+  margin-left: 32px;
+  height: 32px;
+  width: 32px;
+  position: relative;
+  cursor: pointer;
+  &::after {
+    content: ' ';
+    transition: all 0.4s ease;
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    @apply bg-sidebarTextColor rounded-full h-2 w-2;
+    
+    &:hover {
+      @apply bg-white scale-125;
+    }
+  }
+  
+}

@@ -1,0 +1,72 @@
+@import "/src/shared/styles/variables";
+
+.wrapper {
+  padding: 14px 12px;
+  margin-bottom: 12px;
+  border-radius: 5px;
+  display: flex;
+  //justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.5s ease-out;
+  max-width: 100%;
+  min-width: 44px;
+  overflow: hidden;
+
+  svg {
+    transition: all 0.5s ease-out;
+    height: 20px;
+    width: 20px !important;
+    fill: $sidebarTextColor;
+  }
+
+  &.active {
+    background-color: $green;
+    .link {
+      color: #fff;
+    }
+    svg {
+      fill: #fff;
+    }
+  }
+
+  &:hover {
+    background-color: $green;
+    .link {
+      color: #fff;
+    }
+    svg {
+      fill: #fff;
+    }
+  }
+
+  &.closed {
+    align-self: center;
+    .contentWrapper {
+      width: auto;
+    }
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  width: 160px;
+  min-width: 20px;
+  align-items: center;
+  height: 20px;
+  transition: all 0.5s ease-out;
+}
+
+
+.link {
+  font-size: 16px;
+  transition: all 0.5s ease-out;
+  font-weight: 400;
+  white-space: nowrap;
+  flex: 1 1;
+}
+
+.active {
+  font-weight: 500;
+  color: #eeeeee;
+}

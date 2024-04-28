@@ -1,0 +1,10 @@
+@import "src/shared/styles/variables";
+
+
+.wrapper {
+  padding: 12px;
+  height: calc(100vh - 40px);
+  margin: 20px !important;
+  transition: width 0.5s ease-out;
+  background-color: $sidebarBg;
+}

@@ -1,0 +1,11 @@
+.wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.block {
+  @apply w-[500px] bg-sidebarTextColor h-full overflow-y-auto bg-primary rounded p-2
+}

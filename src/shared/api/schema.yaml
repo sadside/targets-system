@@ -1,0 +1,1039 @@
+openapi: 3.0.3
+info:
+  title: ''
+  version: 0.0.0
+paths:
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/auth/logout/:
+    get:
+      operationId: auth_logout_retrieve
+      tags:
+      - auth
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/auth/phone-code/:
+    get:
+      operationId: auth_phone_code_retrieve
+      tags:
+      - auth
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/send-code/:
+    post:
+      operationId: auth_send_code_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PhoneNumber'
+        required: true
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PhoneNumber'
+          description: ''
+  /api/orders/calculate/:
+    get:
+      operationId: orders_calculate_retrieve
+      tags:
+      - orders
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/orders/orders/:
+    get:
+      operationId: orders_orders_retrieve
+      tags:
+      - orders
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewOrder'
+          description: ''
+    post:
+      operationId: orders_orders_create
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ViewOrder'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ViewOrder'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ViewOrder'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ViewOrder'
+          description: ''
+  /api/orders/payment/:
+    get:
+      operationId: orders_payment_retrieve
+      tags:
+      - orders
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/orders/payment/status/:
+    get:
+      operationId: orders_payment_status_retrieve
+      tags:
+      - orders
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+          description: ''
+  /api/products/detail/{slug}/:
+    get:
+      operationId: products_detail_retrieve
+      parameters:
+      - in: path
+        name: slug
+        schema:
+          type: string
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/products/filter/:
+    get:
+      operationId: products_filter_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedListProductList'
+          description: ''
+  /api/products/path/:
+    get:
+      operationId: products_path_retrieve
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/products/product/{id}/:
+    get:
+      operationId: products_product_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/products/products/:
+    get:
+      operationId: products_products_list
+      tags:
+      - products
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ListProducts'
+          description: ''
+  /api/profile/cart/:
+    get:
+      operationId: profile_cart_retrieve
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+    post:
+      operationId: profile_cart_create
+      tags:
+      - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+    delete:
+      operationId: profile_cart_destroy
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/profile/cart/add/:
+    post:
+      operationId: profile_cart_add_create
+      tags:
+      - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+  /api/profile/cart/clear/:
+    get:
+      operationId: profile_cart_clear_retrieve
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/profile/cart/maximization/:
+    get:
+      operationId: profile_cart_maximization_retrieve
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+  /api/profile/cart/remove/:
+    post:
+      operationId: profile_cart_remove_create
+      tags:
+      - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Cart'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cart'
+          description: ''
+  /api/profile/favorites/:
+    get:
+      operationId: profile_favorites_retrieve
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: profile_favorites_create
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          description: No response body
+    delete:
+      operationId: profile_favorites_destroy
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/profile/info/:
+    get:
+      operationId: profile_info_retrieve
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataSerialzier'
+          description: ''
+    post:
+      operationId: profile_info_create
+      tags:
+      - profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserDataSerialzier'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserDataSerialzier'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserDataSerialzier'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDataSerialzier'
+          description: ''
+  /api/profile/search-address/:
+    get:
+      operationId: profile_search_address_retrieve
+      tags:
+      - profile
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - ckb
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - ug
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - tokenAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    AloneProductPath:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название
+          maxLength: 63
+        slug:
+          type: string
+          title: Слаг (создается автоматически)
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - id
+      - name
+    Cart:
+      type: object
+      properties:
+        product:
+          type: string
+          readOnly: true
+        quantity:
+          type: integer
+          maximum: 2147483647
+          minimum: 0
+          title: Количество
+      required:
+      - product
+    ListProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название
+          maxLength: 255
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Цена
+        image:
+          type: string
+          format: uri
+          title: Выбрать главное изображение
+        colours:
+          type: string
+          readOnly: true
+        path:
+          $ref: '#/components/schemas/AloneProductPath'
+        modifications:
+          type: string
+          readOnly: true
+      required:
+      - colours
+      - id
+      - modifications
+      - name
+      - path
+      - price
+    ListProducts:
+      type: object
+      properties:
+        product_id:
+          type: string
+          readOnly: true
+        modification_id:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        price:
+          type: string
+          readOnly: true
+        old_price:
+          type: string
+          readOnly: true
+        images:
+          type: string
+          readOnly: true
+        colors_count:
+          type: string
+          readOnly: true
+        path:
+          type: string
+          readOnly: true
+        slug:
+          type: string
+          readOnly: true
+      required:
+      - colors_count
+      - images
+      - modification_id
+      - name
+      - old_price
+      - path
+      - price
+      - product_id
+      - slug
+    Login:
+      type: object
+      properties:
+        phone:
+          type: string
+        code:
+          type: string
+      required:
+      - code
+      - phone
+    PaginatedListProductList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ListProduct'
+    Payment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        amount:
+          type: integer
+          readOnly: true
+          title: Сумма в копейках
+        order_id:
+          type: string
+          readOnly: true
+          title: Номер заказа
+        description:
+          type: string
+          readOnly: true
+          title: Описание
+        success:
+          type: boolean
+          readOnly: true
+          title: Успешно проведен
+        status:
+          type: string
+          readOnly: true
+          title: Статус транзакции
+        payment_id:
+          type: string
+          readOnly: true
+          title: Уникальный идентификатор транзакции в системе банка
+        error_code:
+          type: string
+          readOnly: true
+          title: Код ошибки
+        payment_url:
+          type: string
+          readOnly: true
+          title: Ссылка на страницу оплаты.
+          description: Ссылка на страницу оплаты. По умолчанию ссылка доступна в течении
+            24 часов.
+        message:
+          type: string
+          readOnly: true
+          title: Краткое описание ошибки
+        details:
+          type: string
+          readOnly: true
+          title: Подробное описание ошибки
+      required:
+      - amount
+      - description
+      - details
+      - error_code
+      - id
+      - message
+      - order_id
+      - payment_id
+      - payment_url
+      - status
+      - success
+    PaymentTypeEnum:
+      enum:
+      - online
+      - cash
+      - fps
+      type: string
+      description: |-
+        * `online` - Картой онлайн
+        * `cash` - Наличными
+        * `fps` - СБП
+    PhoneNumber:
+      type: object
+      properties:
+        phone:
+          type: string
+      required:
+      - phone
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Название
+          maxLength: 255
+        description:
+          type: string
+          nullable: true
+          title: Описание
+        price:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Цена
+        image:
+          type: string
+          format: uri
+          title: Выбрать главное изображение
+        color_images:
+          type: string
+          readOnly: true
+        category:
+          type: integer
+          title: Категория товара
+        path:
+          $ref: '#/components/schemas/AloneProductPath'
+        modifications:
+          type: string
+          readOnly: true
+        full_path:
+          type: string
+          readOnly: true
+        slug_path:
+          type: string
+          readOnly: true
+      required:
+      - category
+      - color_images
+      - full_path
+      - id
+      - modifications
+      - name
+      - path
+      - price
+      - slug_path
+    ReceivingEnum:
+      enum:
+      - delivery_address
+      - delivery_stock
+      - pickup
+      type: string
+      description: |-
+        * `delivery_address` - Доставка до двери
+        * `delivery_stock` - Доставка до склада
+        * `pickup` - Самовывоз
+    StatusEnum:
+      enum:
+      - created
+      - paid
+      - in_delivery
+      - delivered
+      - received
+      type: string
+      description: |-
+        * `created` - Created
+        * `paid` - Paid
+        * `in_delivery` - In Delivery
+        * `delivered` - Delivered
+        * `received` - Received
+    UserDataSerialzier:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        email:
+          type: string
+          format: email
+          readOnly: true
+        phone:
+          type: string
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          title: Имя
+          maxLength: 64
+        surname:
+          type: string
+          nullable: true
+          title: Фамилия
+          maxLength: 64
+        birthday_date:
+          type: string
+          format: date
+        city:
+          type: string
+          nullable: true
+          title: Город
+          maxLength: 128
+        street:
+          type: string
+          nullable: true
+          title: Улица
+          maxLength: 128
+        house:
+          type: string
+          nullable: true
+          title: Дом
+          maxLength: 16
+        frame:
+          type: string
+          nullable: true
+          title: Корпус
+          maxLength: 16
+        apartment:
+          type: string
+          nullable: true
+          title: Квартира
+          maxLength: 16
+      required:
+      - birthday_date
+      - email
+      - id
+      - phone
+    ViewOrder:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          title: Имя клиента
+          maxLength: 128
+        surname:
+          type: string
+          title: Фамилия клиента
+          maxLength: 128
+        email:
+          type: string
+          format: email
+          title: Почта клиента
+          maxLength: 254
+        phone:
+          type: string
+          title: Телефон клиента
+          maxLength: 11
+        receiving:
+          allOf:
+          - $ref: '#/components/schemas/ReceivingEnum'
+          title: Способ получения
+        payment_type:
+          allOf:
+          - $ref: '#/components/schemas/PaymentTypeEnum'
+          title: Способ оплаты
+        city:
+          type: string
+          nullable: true
+          title: Город
+          maxLength: 128
+        street:
+          type: string
+          nullable: true
+          title: Улица
+          maxLength: 128
+        house:
+          type: string
+          nullable: true
+          title: Дом
+          maxLength: 16
+        frame:
+          type: string
+          nullable: true
+          title: Корпус
+          maxLength: 16
+        apartment:
+          type: string
+          nullable: true
+          title: Квартира
+          maxLength: 16
+        is_paid:
+          type: boolean
+          title: Оплачено?
+        is_received:
+          type: boolean
+          title: Получен?
+        products:
+          type: string
+          readOnly: true
+        order_date:
+          type: string
+          format: date-time
+          title: Дата заказа
+        status:
+          allOf:
+          - $ref: '#/components/schemas/StatusEnum'
+          title: Статус
+        receiving_date:
+          type: string
+          format: date-time
+          nullable: true
+          title: Дата получения
+        baza_loyalty:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: Бонусная программа
+      required:
+      - email
+      - id
+      - name
+      - payment_type
+      - phone
+      - products
+      - receiving
+      - surname
+  securitySchemes:
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"

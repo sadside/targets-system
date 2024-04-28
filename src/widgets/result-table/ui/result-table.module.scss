@@ -1,0 +1,17 @@
+.table {
+  @apply rounded mb-8 text-lg;
+  
+  * {
+    @apply text-lg;
+  }
+}
+
+.test {
+  max-height: calc(100vh - 350px) !important;
+  overflow-y: auto;
+}
+
+.tableWrapper {
+  height: calc(100vh - 350px) !important;
+  @apply mb-8;
+}

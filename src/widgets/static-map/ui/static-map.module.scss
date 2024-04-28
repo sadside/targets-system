@@ -1,0 +1,24 @@
+@import "shared/styles/variables";
+
+.controls {
+ position: relative !important;
+ display: flex !important;
+ //flex-direction: column !important;
+ padding: 0 !important;
+ margin: 0 !important;
+ justify-content: space-between;
+ height: 100% !important;
+ width: 1000%;
+ box-sizing: border-box !important; 
+}
+
+.controlsBtns {
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+}
+
+.map {
+ border: 1px dotted $sidebarHoverColor;
+ @apply bg-primary rounded;
+}

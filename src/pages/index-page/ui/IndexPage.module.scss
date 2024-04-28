@@ -1,0 +1,80 @@
+@import "shared/styles/variables";
+.wrapper {
+  display: flex;
+  margin: 20px !important;
+  transition: width 0.5s ease-out;
+  overflow: hidden;
+  background-color: $sidebarBg;
+}
+
+
+.leftBlock {
+  //padding: 24px 0 24px 24px;
+}
+
+.rightBlock {
+  background-color: $sidebarBg;
+  flex: 1 0;
+  margin-left: 10px;
+}
+
+.btn {
+  height: 50px;
+  width: 50px;
+  border-radius: 10px;
+  background-color: $green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  svg {
+    fill: #fff;
+    height: 35px;
+    width: 35px;
+  }
+}
+
+.goals {
+  margin-top: 30px;
+  overflow-y: scroll;
+}
+
+.map {
+  //background-image: url("../../../shared/assets/testMap.jpg");
+  height: 650px;
+  object-fit: fill;
+}
+
+.mapWrapper {
+  height: calc(100vh - 240px);
+  position: relative;
+}
+
+.customControls {
+  button {
+    height: 40px;
+    width: 40px;
+    font-size: 36px;
+  }
+}
+
+.controls {
+  display: block;
+  position: absolute;
+  left: 300px;
+  top: 0;
+  
+  
+  //button {
+  //  background-color: $green;
+  //  border-bottom: none;
+  //  &:hover {
+  //    background-color: $green;
+  //  }
+  //  
+  //  
+  //  svg {
+  //    fill: #fff;
+  //  }
+  //}
+}

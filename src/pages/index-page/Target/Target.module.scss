@@ -1,0 +1,30 @@
+@import "shared/styles/variables";
+
+.wrapper {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+  margin: 12px 0;
+  padding: 12px;
+
+  .title {
+    font-weight: 500;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 50px;
+  }
+
+  .circle {
+    height: 16px !important;
+    width: 16px !important;
+    border-radius: 100%;
+    cursor: pointer;
+  }
+
+}
