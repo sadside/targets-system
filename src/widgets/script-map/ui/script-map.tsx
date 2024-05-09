@@ -13,7 +13,6 @@ import {Button} from 'shared/ui/components/ui/button.tsx';
 import {UseClearMap} from 'shared/utils/hooks';
 import styles from './script-map.module.scss';
 import {getNodesToRender} from 'shared/utils/getNodesToRender.tsx';
-import {targets} from 'pages/index-page/mock.ts';
 
 interface StaticMapProps {}
 
@@ -127,7 +126,7 @@ export const ScriptMap = ({}: StaticMapProps) => {
     //     }
     // }, [targets]);
 
-    const [nodes, setNodes, onNodesChange] = useNodesState(
+    const [nodes, _, onNodesChange] = useNodesState(
         getNodesToRender(targetsMock)
     );
 

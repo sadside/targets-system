@@ -5,7 +5,6 @@ import {twMerge} from 'tailwind-merge';
 import {useUnit} from 'effector-react';
 import {
     $activeInterval,
-    $timeframe,
     DEFAULT_TIMEFRAME,
 } from 'widgets/script-timeline/model/script-timeline.ts';
 

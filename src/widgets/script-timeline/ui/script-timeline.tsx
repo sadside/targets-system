@@ -1,10 +1,13 @@
-import {millisecondsToSeconds, secondsToMilliseconds} from 'date-fns';
+import {UniqueIdentifier} from '@dnd-kit/core';
+import {secondsToMilliseconds} from 'date-fns';
 import {
     DragEndEvent,
     ItemDefinition,
+    Relevance,
     ResizeEndEvent,
     TimelineContext,
 } from 'dnd-timeline';
+import {useUnit} from 'effector-react';
 import {useCallback, useEffect, useState} from 'react';
 import {
     generateItems,
@@ -12,16 +15,14 @@ import {
     generateRulerItems,
     getFinalyRevelance,
 } from 'widgets/lib/utils.ts';
+import {targetsMock} from 'widgets/script-map/ui/script-map.tsx';
 import {
     $activeInterval,
     DEFAULT_TIMEFRAME,
     timeframeChanged,
 } from 'widgets/script-timeline/model/script-timeline.ts';
 import {Timeline} from 'widgets/script-timeline/timeline/ui/timeline.tsx';
-import {millisecondsInMinute, millisecondsInSecond} from 'date-fns/constants';
-import {useUnit} from 'effector-react';
 import {AdditionTargetsModal} from '@/feautures/addition-targets-modal/ui/addition-targets-modal.tsx';
-import {targetsMock} from 'widgets/script-map/ui/script-map.tsx';
 
 export const ScriptTimeline = () => {
     const [timeframe, setTimeframe] = useState(DEFAULT_TIMEFRAME);
@@ -59,7 +60,7 @@ export const ScriptTimeline = () => {
                 element => element.id === activeItemId
             );
 
-            let activeRowId = null;
+            let activeRowId: string | null = null;
 
             if (activeRow) activeRowId = activeRow.rowId;
 
@@ -88,7 +89,15 @@ export const ScriptTimeline = () => {
                         activeInterval
             );
 
-            const mock: ItemDefinition[] = items.map(item => {
+            const mock: (
+                | ItemDefinition
+                | {
+                      disabled?: boolean;
+                      id: string;
+                      relevance: Relevance;
+                      rowId: string | null;
+                  }
+            )[] = items.map(item => {
                 if (item.id !== activeItemId) return item;
 
                 return {
@@ -98,37 +107,57 @@ export const ScriptTimeline = () => {
                 };
             });
 
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-expect-error
             const rowItems = Object.groupBy(mock, ({rowId}) => rowId)[
                 activeRowId
-            ].sort((a, b) => a.relevance.start - b.relevance.start);
+            ].sort(
+                (
+                    a: {relevance: {start: number}},
+                    b: {relevance: {start: number}}
+                ) => a.relevance.start - b.relevance.start
+            );
 
-            rowItems.forEach((element, index) => {
-                if (element.id === activeItemId) {
-                    if (
-                        element.relevance.start.getTime() -
-                            secondsToMilliseconds(3) <=
-                            rowItems[index - 1]?.relevance.end.getTime() &&
-                        rowItems[index - 1]
-                    ) {
-                        updatedRelevance.start = new Date(
-                            rowItems[index - 1].relevance.end.getTime() +
-                                secondsToMilliseconds(3)
-                        );
-                    }
+            rowItems.forEach(
+                (
+                    element: {
+                        id: UniqueIdentifier;
+                        relevance: {
+                            start: {getTime: () => number};
+                            end: {getTime: () => number};
+                        };
+                    },
+                    index: number
+                ) => {
+                    if (element.id === activeItemId) {
+                        if (
+                            element.relevance.start.getTime() -
+                                secondsToMilliseconds(3) <=
+                                rowItems[index - 1]?.relevance.end.getTime() &&
+                            rowItems[index - 1]
+                        ) {
+                            updatedRelevance.start = new Date(
+                                rowItems[index - 1].relevance.end.getTime() +
+                                    secondsToMilliseconds(3)
+                            );
+                        }
 
-                    if (
-                        element.relevance.end.getTime() +
-                            secondsToMilliseconds(3) >=
-                            rowItems[index + 1]?.relevance.start.getTime() &&
-                        rowItems[index + 1]
-                    ) {
-                        updatedRelevance.end = new Date(
-                            rowItems[index + 1].relevance.start.getTime() -
-                                secondsToMilliseconds(3)
-                        );
+                        if (
+                            element.relevance.end.getTime() +
+                                secondsToMilliseconds(3) >=
+                                rowItems[
+                                    index + 1
+                                ]?.relevance.start.getTime() &&
+                            rowItems[index + 1]
+                        ) {
+                            updatedRelevance.end = new Date(
+                                rowItems[index + 1].relevance.start.getTime() -
+                                    secondsToMilliseconds(3)
+                            );
+                        }
                     }
                 }
-            });
+            );
 
             setItems(prev =>
                 prev.map(item => {
@@ -145,7 +174,11 @@ export const ScriptTimeline = () => {
     );
 
     const onDragEnd = useCallback(
-        (event: DragEndEvent, items: ItemDefinition[], activeInterval) => {
+        (
+            event: DragEndEvent,
+            items: ItemDefinition[],
+            activeInterval: number
+        ) => {
             const activeItemId = event.active.id;
             const activeRowId = event.over?.id as string;
 
@@ -183,9 +216,16 @@ export const ScriptTimeline = () => {
                 };
             });
 
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-expect-error
             const rowItems = Object.groupBy(mock, ({rowId}) => rowId)[
                 activeRowId
-            ].sort((a, b) => a.relevance.start - b.relevance.start);
+            ].sort(
+                (
+                    a: {relevance: {start: number}},
+                    b: {relevance: {start: number}}
+                ) => a.relevance.start - b.relevance.start
+            );
 
             if (
                 getFinalyRevelance(

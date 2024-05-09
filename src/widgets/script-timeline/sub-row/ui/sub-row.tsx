@@ -7,9 +7,9 @@ import {twMerge} from 'tailwind-merge';
 interface SubRowProps {
     children: React.ReactNode;
     ruler?: boolean;
-    setItems: Dispatch<SetStateAction<ItemDefinition[]>>;
-    id: string;
-    items: ItemDefinition[];
+    setItems?: Dispatch<SetStateAction<ItemDefinition[]>>;
+    id?: string;
+    items?: ItemDefinition[];
 }
 
 export const SubRow = ({
@@ -22,63 +22,64 @@ export const SubRow = ({
     const {getDateFromScreenX} = useTimelineContext();
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-        setItems(prevState => {
-            const res = [...prevState];
-            let flag = true;
+        setItems &&
+            setItems(prevState => {
+                const res = [...prevState];
+                let flag = true;
 
-            const itemStartValue = new Date(
-                secondsToMilliseconds(
-                    millisecondsToSeconds(
-                        getDateFromScreenX(e.screenX).getTime()
+                const itemStartValue = new Date(
+                    secondsToMilliseconds(
+                        millisecondsToSeconds(
+                            getDateFromScreenX(e.screenX).getTime()
+                        )
                     )
-                )
-            );
+                );
 
-            const relevance = {
-                start: itemStartValue,
-                end: new Date(
-                    itemStartValue.getTime() + secondsToMilliseconds(3)
-                ),
-            };
+                const relevance = {
+                    start: itemStartValue,
+                    end: new Date(
+                        itemStartValue.getTime() + secondsToMilliseconds(3)
+                    ),
+                };
 
-            items?.forEach(itm => {
-                const {start, end} = itm.relevance;
+                items?.forEach(itm => {
+                    const {start, end} = itm.relevance;
 
-                if (relevance.start <= end && start <= relevance.end) {
-                    flag = false;
-                    return;
-                }
-
-                if (relevance.start > end) {
-                    const leftOffset =
-                        relevance.start.getTime() - end.getTime();
-
-                    if (leftOffset < 3000) {
+                    if (relevance.start <= end && start <= relevance.end) {
                         flag = false;
-                        return false;
+                        return;
                     }
-                }
 
-                if (relevance.end < start) {
-                    const rightOffset =
-                        start.getTime() - relevance.end.getTime();
+                    if (relevance.start > end) {
+                        const leftOffset =
+                            relevance.start.getTime() - end.getTime();
 
-                    if (rightOffset < 3000) {
-                        flag = false;
-                        return false;
+                        if (leftOffset < 3000) {
+                            flag = false;
+                            return false;
+                        }
                     }
-                }
-            });
 
-            if (flag)
-                res.push({
-                    id: nanoid(4),
-                    rowId: id,
-                    relevance,
+                    if (relevance.end < start) {
+                        const rightOffset =
+                            start.getTime() - relevance.end.getTime();
+
+                        if (rightOffset < 3000) {
+                            flag = false;
+                            return false;
+                        }
+                    }
                 });
 
-            return res;
-        });
+                if (flag)
+                    res.push({
+                        id: nanoid(4),
+                        rowId: id || '',
+                        relevance,
+                    });
+
+                return res;
+            });
     };
 
     return (

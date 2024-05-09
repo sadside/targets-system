@@ -1,19 +1,9 @@
 import {Button} from 'shared/ui/components/ui/button.tsx';
 import {IconLeft, IconRight} from 'react-day-picker';
 import {twMerge} from 'tailwind-merge';
-import {useUnit} from 'effector-react/effector-react.umd';
-import {
-    $activeInterval,
-    DEFAULT_TIMEFRAME,
-} from 'widgets/script-timeline/model/script-timeline.ts';
+import {DEFAULT_TIMEFRAME} from 'widgets/script-timeline/model/script-timeline.ts';
 import {Relevance, Timeframe, useTimelineContext} from 'dnd-timeline';
-import {
-    millisecondsInDay,
-    millisecondsInHour,
-    millisecondsInMinute,
-    millisecondsInSecond,
-    minutesInDay,
-} from 'date-fns/constants';
+import {millisecondsInDay, millisecondsInHour} from 'date-fns/constants';
 import {
     hoursToMilliseconds,
     millisecondsToSeconds,
@@ -21,12 +11,7 @@ import {
     secondsToMilliseconds,
 } from 'date-fns';
 import {ClockIcon, MinusIcon, PlusIcon} from '@radix-ui/react-icons';
-import {
-    Tooltip,
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-} from 'shared/ui/components/ui/tooltip.tsx';
+import {TooltipProvider} from 'shared/ui/components/ui/tooltip.tsx';
 import {
     Popover,
     PopoverContent,
@@ -34,7 +19,6 @@ import {
 } from 'shared/ui/components/ui/popover.tsx';
 import {Input} from 'shared/ui/components/ui/input.tsx';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {usePopover} from '@chakra-ui/react';
 import {Dispatch, SetStateAction} from 'react';
 
 interface ControlPanelProps {
@@ -48,7 +32,7 @@ type Inputs = {
 };
 
 export const ControlPanel = ({setTimeframe}: ControlPanelProps) => {
-    const {timeframe, getDateFromScreenX} = useTimelineContext();
+    const {timeframe} = useTimelineContext();
 
     const timeframeSize = timeframe.end.getTime() - timeframe.start.getTime();
 
@@ -72,38 +56,38 @@ export const ControlPanel = ({setTimeframe}: ControlPanelProps) => {
         },
     });
 
-    const handleMinuteClick = () => {
-        setTimeframe((prev: Timeframe) => {
-            return {
-                start: prev.start,
-                end: new Date(
-                    DEFAULT_TIMEFRAME.start.getTime() + millisecondsInHour
-                ),
-            };
-        });
-    };
+    // const handleMinuteClick = () => {
+    //     setTimeframe((prev: Timeframe) => {
+    //         return {
+    //             start: prev.start,
+    //             end: new Date(
+    //                 DEFAULT_TIMEFRAME.start.getTime() + millisecondsInHour
+    //             ),
+    //         };
+    //     });
+    // };
 
-    const handleSecondsClick = () => {
-        setTimeframe((prev: Timeframe) => {
-            return {
-                start: prev.start,
-                end: new Date(
-                    DEFAULT_TIMEFRAME.start.getTime() + millisecondsInMinute
-                ),
-            };
-        });
-    };
+    // const handleSecondsClick = () => {
+    //     setTimeframe((prev: Timeframe) => {
+    //         return {
+    //             start: prev.start,
+    //             end: new Date(
+    //                 DEFAULT_TIMEFRAME.start.getTime() + millisecondsInMinute
+    //             ),
+    //         };
+    //     });
+    // };
 
-    const handleHoursClick = () => {
-        setTimeframe((prev: Timeframe) => {
-            return {
-                start: prev.start,
-                end: new Date(
-                    DEFAULT_TIMEFRAME.start.getTime() + millisecondsInDay
-                ),
-            };
-        });
-    };
+    // const handleHoursClick = () => {
+    //     setTimeframe((prev: Timeframe) => {
+    //         return {
+    //             start: prev.start,
+    //             end: new Date(
+    //                 DEFAULT_TIMEFRAME.start.getTime() + millisecondsInDay
+    //             ),
+    //         };
+    //     });
+    // };
 
     const handleLeftIconCLick = () => {
         setTimeframe((prev: Timeframe) => {
@@ -152,7 +136,7 @@ export const ControlPanel = ({setTimeframe}: ControlPanelProps) => {
 
     const onSubmit: SubmitHandler<Inputs> = data => {
         reset();
-        setTimeframe((prev: Timeframe) => {
+        setTimeframe(() => {
             const start = new Date(
                 DEFAULT_TIMEFRAME.start.getTime() +
                     secondsToMilliseconds(+data.seconds) +

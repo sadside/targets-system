@@ -1,6 +1,6 @@
-import {useItem, useTimelineContext} from 'dnd-timeline';
+import {useItem} from 'dnd-timeline';
 import type {Relevance} from 'dnd-timeline';
-import {BaseSyntheticEvent, ReactNode, SyntheticEvent, useState} from 'react';
+import {ReactNode, useState} from 'react';
 import {twMerge} from 'tailwind-merge';
 
 interface ItemProps {
@@ -18,14 +18,14 @@ export const Item = (props: ItemProps) => {
             onResizeEnd: () => setIsEditing(false),
         });
 
-    const {getDateFromScreenX} = useTimelineContext();
+    // const {getDateFromScreenX} = useTimelineContext();
 
     const [isEditing, setIsEditing] = useState(false);
 
-    const handleClick = (e: any) => {
-        console.log(getDateFromScreenX(e.screenX));
-        console.log('q1231');
-    };
+    // const handleClick = (e: any) => {
+    //     console.log(getDateFromScreenX(e.screenX));
+    //     console.log('q1231');
+    // };
 
     return (
         <div ref={setNodeRef} style={itemStyle} {...listeners} {...attributes}>

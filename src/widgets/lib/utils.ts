@@ -1,4 +1,4 @@
-import {millisecondsToSeconds, secondsToMilliseconds} from 'date-fns';
+import {secondsToMilliseconds} from 'date-fns';
 import {
     millisecondsInDay,
     millisecondsInHour,
@@ -12,11 +12,7 @@ import type {
     Timeframe,
 } from 'dnd-timeline';
 import {nanoid} from 'nanoid';
-import {
-    activeIntervalChanged,
-    DEFAULT_TIMEFRAME,
-    rulerChanged,
-} from 'widgets/script-timeline/model/script-timeline.ts';
+import {activeIntervalChanged} from 'widgets/script-timeline/model/script-timeline.ts';
 
 interface GenerateRowsOptions {
     disabled?: boolean;
@@ -155,6 +151,7 @@ export const generateRulerItems = (timeframe: Timeframe) => {
     return items;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const setPositionBetweenItems = (
     item: Relevance,
     itemStart: number,
@@ -190,7 +187,7 @@ const setPositionBetweenItems = (
 export const getFinalyRevelance = (
     items: ItemDefinition[],
     item: Relevance,
-    activeItemId: any,
+    activeItemId: unknown,
     duration: number
 ): boolean => {
     let flag = false;

@@ -1,6 +1,5 @@
 import {ReactNode} from 'react';
 import classNames from 'classnames';
-import styles from './title.module.scss';
 
 export interface TitleProps {
     classname?: string;

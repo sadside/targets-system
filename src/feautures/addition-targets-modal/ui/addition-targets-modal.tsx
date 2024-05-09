@@ -1,25 +1,34 @@
-import {Target} from 'entities/target';
-import {Dialog, DialogContent} from 'shared/ui/components/ui/dialog.tsx';
-import {useState} from 'react';
-import {Button} from 'shared/ui/components/ui/button.tsx';
 import {PlusIcon, TargetIcon} from '@radix-ui/react-icons';
+import {useUnit} from 'effector-react';
+import {useState} from 'react';
+import {Target} from 'entities/target';
+import {Button} from 'shared/ui/components/ui/button.tsx';
+import {Dialog, DialogContent} from 'shared/ui/components/ui/dialog.tsx';
+import {
+    $isVisible,
+    modalStateChanged,
+} from '@/feautures/addition-targets-modal/ui/model/addition-target-model.ts';
 
 interface AdditionTargetsModalProps {
     targets: Target[];
 }
 
 export const AdditionTargetsModal = ({targets}: AdditionTargetsModalProps) => {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     const groups = Object.groupBy(targets, ({group}) => {
         if (!group) return 'Без группы';
         else return group.name;
     });
 
-    console.log(groups);
+    const isVisible = useUnit($isVisible);
 
     const [activeGroup, setActiveGroup] = useState(Object.keys(groups)[0]);
 
     return (
-        <Dialog defaultOpen={true}>
+        <Dialog
+            open={isVisible}
+            onOpenChange={state => modalStateChanged(state)}>
             <DialogContent className="bg-black border h-[800px] border-sidebarHoverColor w-[900px]">
                 <div className="flex gap-5">
                     <div>
