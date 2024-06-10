@@ -1,16 +1,15 @@
-import {TargetImage} from 'shared/ui/components/ui/target-image.tsx';
-import {Target} from 'entities/target';
+import { TargetData } from 'entities/target/api/target-api.ts';
+import { TargetImage } from 'shared/ui/components/ui/target-image.tsx';
+
 interface TargetNodeProps {
-    data: Target;
+    data: TargetData;
 }
 
-export const TargetNode = ({data}: TargetNodeProps) => {
+export const TargetNode = ({ data }: TargetNodeProps) => {
     return (
-        <div className="bg-transparent">
-            <>
-                <TargetImage type={data.type} />
-                <div className="mt-2 font-bold text-white">{`${data.id}. ${data.name}`}</div>
-            </>
-        </div>
+        <>
+            <TargetImage type={'24'} />
+            <div className="mt-2 font-bold text-white">{`${data.name}`}</div>
+        </>
     );
 };

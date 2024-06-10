@@ -1,11 +1,15 @@
 {
   "singleQuote": true,
-  "trailingComma": "es5",
+  "jsxSingleQuote": false,
+  "trailingComma": "all",
   "semi": true,
   "useTabs": false,
   "tabWidth": 4,
-  "bracketSpacing": false,
+  "bracketSpacing": true,
   "arrowParens": "avoid",
   "jsxBracketSameLine": true,
-  "htmlWhitespaceSensitivity": "strict"
+  "htmlWhitespaceSensitivity": "strict",
+  "plugins": ["prettier-plugin-organize-imports"],
+  "printWidth": 70,
+  "endOfLine": "lf"
 }

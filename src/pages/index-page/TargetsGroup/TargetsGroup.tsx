@@ -1,5 +1,5 @@
-import {Target} from 'pages/index-page/Target/Target.tsx';
-import {TargetType} from 'pages/index-page/types.ts';
+import { Target } from 'entities/target/api/target-api.ts';
+import { TargetItem } from 'pages/index-page/Target/TargetItem.tsx';
 import {
     Accordion,
     AccordionContent,
@@ -9,10 +9,13 @@ import {
 
 interface TargetsGroupProps {
     name: string | null;
-    targets: TargetType[];
+    targets: Target[];
 }
 
-export const TargetsGroup = ({name, targets}: TargetsGroupProps) => {
+export const TargetsGroup = ({
+    name,
+    targets,
+}: TargetsGroupProps) => {
     return (
         <>
             {name ? (
@@ -21,18 +24,21 @@ export const TargetsGroup = ({name, targets}: TargetsGroupProps) => {
                         <AccordionTrigger className="text-lg">
                             <div>
                                 Группа мишеней:
-                                <span className="font-bold"> {name}</span>
+                                <span className="font-bold">
+                                    {' '}
+                                    {name}
+                                </span>
                             </div>
                         </AccordionTrigger>
                         <AccordionContent>
                             {targets.length
                                 ? targets.map(target => (
-                                      <Target
+                                      <TargetItem
                                           id={target.id}
                                           key={target.id}
-                                          status={target.status}
-                                          charge={target.charge}
-                                          position={target.position}
+                                          // status={target.status}
+                                          // charge={target.charge}
+                                          // position={target.position}
                                       />
                                   ))
                                 : 'Мишенней нет '}
@@ -41,7 +47,7 @@ export const TargetsGroup = ({name, targets}: TargetsGroupProps) => {
                 </Accordion>
             ) : (
                 targets.map(target => (
-                    <Target
+                    <TargetItem
                         id={target.id}
                         key={target.id}
                         status={target.status}

@@ -1,5 +1,5 @@
-import {createStore} from 'effector';
-import {Script} from 'shared/types/script.ts';
+import { createStore } from 'effector';
+import { Script } from 'shared/types/script.ts';
 
 // export interface Script {
 //     id: number;

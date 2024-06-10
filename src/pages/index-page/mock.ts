@@ -11,7 +11,7 @@ export const targets: ItemWithGroup[] = [
         targets: [
             {
                 id: 0,
-                status: TARGET_STATUSES.ONLINE_IN_PROGRESS,
+                status: TARGET_STATUSES.ONLINE_IDLE,
                 charge: 45,
                 position: TARGET_POSITIONS.TOP,
             },

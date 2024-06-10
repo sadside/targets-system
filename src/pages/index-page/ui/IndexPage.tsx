@@ -1,19 +1,19 @@
-import styles from './IndexPage.module.scss';
-import {
-    ResizableHandle,
-    ResizablePanel,
-    ResizablePanelGroup,
-} from 'shared/ui/components/ui/resizable.tsx';
-import {Button} from 'shared/ui/components/ui/button.tsx';
 import {
     ArrowDownIcon,
     ArrowUpIcon,
     PauseIcon,
     ReloadIcon,
 } from '@radix-ui/react-icons';
-import {TargetsList} from 'pages/index-page/TargetsList/TargetsList.tsx';
-import {ReactFlowProvider} from 'reactflow';
-import {StaticMap} from 'widgets/static-map';
+import { TargetsList } from 'pages/index-page/TargetsList/TargetsList.tsx';
+import { ReactFlowProvider } from 'reactflow';
+import { Button } from 'shared/ui/components/ui/button.tsx';
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from 'shared/ui/components/ui/resizable.tsx';
+import { StaticMap } from 'widgets/static-map';
+import styles from './IndexPage.module.scss';
 
 export const IndexPage = () => {
     return (
@@ -21,7 +21,10 @@ export const IndexPage = () => {
             <ResizablePanelGroup
                 direction="horizontal"
                 className="bg-background-button-outline">
-                <ResizablePanel maxSize={45} minSize={20} defaultSize={25}>
+                <ResizablePanel
+                    maxSize={45}
+                    minSize={20}
+                    defaultSize={25}>
                     <div className={styles.leftBlock}>
                         <div className="flex justify-between mx-4 my-6">
                             <Button

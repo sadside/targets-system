@@ -1,8 +1,9 @@
-import {TrashIcon} from '@radix-ui/react-icons';
+import { TrashIcon } from '@radix-ui/react-icons';
 
-import {useUnit} from 'effector-react';
-import {$scripts} from 'entities/script';
-import {Button} from 'shared/ui/components/ui/button.tsx';
+import { CreateScriptModal } from '@/feautures/create-script';
+import { modalOpened } from '@/feautures/create-script/model/create-script-model.ts';
+import { useUnit } from 'effector-react';
+import { Button } from 'shared/ui/components/ui/button.tsx';
 import {
     Select,
     SelectContent,
@@ -12,24 +13,23 @@ import {
     SelectTrigger,
     SelectValue,
 } from 'shared/ui/components/ui/select.tsx';
+import { toast } from 'sonner';
 import {
     $selectedScript,
+    getAllScriptsQuery,
     scriptSelected,
-} from '@/feautures/script-actions/model/script-action.ts';
-import {modalOpened} from '@/feautures/create-script/model/create-script-model.ts';
-import {CreateScriptModal} from '@/feautures/create-script';
-import {toast} from 'sonner';
+} from 'widgets/script-actions/model/script-action.ts';
 
 interface ScriptActionsProps {}
 
 export const ScriptActions = ({}: ScriptActionsProps) => {
-    const scripts = useUnit($scripts);
-    // const loading = useUnit(getGroupsFx.pending);
-    // useGate(groupsGate);
+    const { data: scripts, pending } = useUnit(getAllScriptsQuery);
     const selectedScript = useUnit($selectedScript);
 
-    const selectPlaceholder = 'Выберите сценарий для редактирования. ';
-    const disableSelect = !scripts;
+    const selectPlaceholder =
+        'Выберите сценарий для редактирования. ';
+
+    const disableSelect = !scripts || pending;
 
     const handleSelectChange = (value: string) => {
         scriptSelected(value);
@@ -54,20 +54,28 @@ export const ScriptActions = ({}: ScriptActionsProps) => {
                     className="w-[180px] mr-4"
                     disabled={disableSelect}>
                     <SelectValue placeholder={selectPlaceholder}>
-                        {selectedScript?.name || 'Сценарий'}
+                        {pending
+                            ? 'Загрузка...'
+                            : selectedScript?.name ||
+                              'Выберите сценарий'}
                     </SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>Сценарии:</SelectLabel>
-                        {scripts &&
+                        {scripts?.length ? (
                             scripts.map(script => (
                                 <SelectItem
                                     value={JSON.stringify(script)}
                                     key={script.id}>
                                     {script.name}
                                 </SelectItem>
-                            ))}
+                            ))
+                        ) : (
+                            <div className="text-[14px] m-2">
+                                Сценарии отсутствуют.
+                            </div>
+                        )}
                     </SelectGroup>
                 </SelectContent>
             </Select>

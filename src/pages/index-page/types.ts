@@ -6,8 +6,8 @@ export enum TARGET_STATUSES {
 }
 
 export enum TARGET_POSITIONS {
-    TOP = 'top',
-    BOTTOM = 'bottom',
+    TOP,
+    BOTTOM,
 }
 
 export type ItemWithGroup = {

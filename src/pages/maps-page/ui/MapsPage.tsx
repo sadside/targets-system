@@ -1,17 +1,23 @@
+import { useUnit } from 'effector-react';
 import styles from 'pages/result-page/ui/result-page.module.scss';
-import {MapActions} from '@/feautures/map-actions/ui/map-actions.tsx';
-import {StaticMap} from 'widgets/static-map';
-import {ReactFlowProvider} from 'reactflow';
+import { ReactFlowProvider } from 'reactflow';
+import { $activeEditorMap } from 'widgets/editor-map/model/editor-map-model.ts';
+import { EditorMap } from 'widgets/editor-map/ui/editor-map.tsx';
+import { MapActions } from 'widgets/map-actions/ui/map-actions';
 
 export const MapsPage = () => {
+    const activeMap = useUnit($activeEditorMap);
+
     return (
         <div className={styles.wrapper}>
             <MapActions />
-            <div className="h-[600px] mt-5">
-                <ReactFlowProvider>
-                    <StaticMap />
-                </ReactFlowProvider>
-            </div>
+            {activeMap !== null && (
+                <div className="h-[600px] mt-5">
+                    <ReactFlowProvider>
+                        <EditorMap />
+                    </ReactFlowProvider>
+                </div>
+            )}
         </div>
     );
 };

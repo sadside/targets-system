@@ -1,29 +1,36 @@
-import {PlusIcon, TargetIcon} from '@radix-ui/react-icons';
-import {useUnit} from 'effector-react';
-import {useState} from 'react';
-import {Target} from 'entities/target';
-import {Button} from 'shared/ui/components/ui/button.tsx';
-import {Dialog, DialogContent} from 'shared/ui/components/ui/dialog.tsx';
 import {
     $isVisible,
     modalStateChanged,
 } from '@/feautures/addition-targets-modal/ui/model/addition-target-model.ts';
+import { PlusIcon, TargetIcon } from '@radix-ui/react-icons';
+import { useUnit } from 'effector-react';
+import { Target } from 'entities/target';
+import { useState } from 'react';
+import { Button } from 'shared/ui/components/ui/button.tsx';
+import {
+    Dialog,
+    DialogContent,
+} from 'shared/ui/components/ui/dialog.tsx';
 
 interface AdditionTargetsModalProps {
     targets: Target[];
 }
 
-export const AdditionTargetsModal = ({targets}: AdditionTargetsModalProps) => {
+export const AdditionTargetsModal = ({
+    targets,
+}: AdditionTargetsModalProps) => {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
-    const groups = Object.groupBy(targets, ({group}) => {
+    const groups = Object.groupBy(targets, ({ group }) => {
         if (!group) return 'Без группы';
         else return group.name;
     });
 
     const isVisible = useUnit($isVisible);
 
-    const [activeGroup, setActiveGroup] = useState(Object.keys(groups)[0]);
+    const [activeGroup, setActiveGroup] = useState(
+        Object.keys(groups)[0],
+    );
 
     return (
         <Dialog
@@ -48,7 +55,9 @@ export const AdditionTargetsModal = ({targets}: AdditionTargetsModalProps) => {
                                     <div className="flex gap-2">
                                         <Button
                                             onClick={() =>
-                                                setActiveGroup(groupName)
+                                                setActiveGroup(
+                                                    groupName,
+                                                )
                                             }
                                             size="icon">
                                             <TargetIcon />
@@ -68,7 +77,7 @@ export const AdditionTargetsModal = ({targets}: AdditionTargetsModalProps) => {
                         {groups[activeGroup].map((item: Target) => (
                             <div className="bg-primary flex items-center p-5 rounded mb-5 text-[16px] justify-between gap-2">
                                 <span className="cursor-pointer">
-                                    {item.name}
+                                    {item?.name || 'name'}
                                 </span>
                                 <div className="flex gap-2">
                                     <Button size="icon">
