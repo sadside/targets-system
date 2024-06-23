@@ -51,20 +51,11 @@ export const postTargetQuery = createQuery({
 });
 
 export const getGroups = createQuery({
-    handler: async (): Promise<ScriptMock[]> => [
-        {
-            id: 1,
-            name: 'Группа 1',
-        },
-        {
-            id: 2,
-            name: 'Группа 2',
-        },
-        {
-            id: 3,
-            name: 'Группа 3',
-        },
-    ],
+    handler: async (): Promise<ScriptMock[]> => {
+        const res = await api.get('/map/');
+
+        return res.data;
+    },
 });
 
 export const modalVisibleChanged = createEvent<boolean>();

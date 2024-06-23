@@ -1,5 +1,8 @@
 import axios from 'axios';
 
+// юрл не должен заканчиваться на /
+const API_URL = '';
+
 export const api = axios.create({
-    baseURL: import.meta.env.API_URL,
+    baseURL: API_URL,
 });
