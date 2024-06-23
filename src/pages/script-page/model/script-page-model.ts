@@ -1,10 +1,22 @@
 import { sample } from 'effector';
 import { createGate } from 'effector-react';
-import { getAllScriptsQuery } from 'widgets/script-actions/model/script-action.ts';
+import {
+    getAllMapsQuery,
+    getAllScriptsQuery,
+} from 'pages/index-page/model/index-page-model.ts';
 
 export const scriptPageGate = createGate();
 
 sample({
     clock: scriptPageGate.open,
-    target: getAllScriptsQuery.refresh,
+    source: getAllScriptsQuery.$data,
+    filter: scripts => scripts === null,
+    target: getAllScriptsQuery.start,
+});
+
+sample({
+    clock: scriptPageGate.open,
+    source: getAllMapsQuery.$data,
+    filter: scripts => scripts === null,
+    target: getAllMapsQuery.start,
 });

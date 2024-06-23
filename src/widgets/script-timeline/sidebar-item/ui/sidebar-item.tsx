@@ -1,17 +1,26 @@
-import {ReactNode} from 'react';
-import {Button} from 'shared/ui/components/ui/button.tsx';
-import {Pencil1Icon, PlusIcon, TrashIcon} from '@radix-ui/react-icons';
-import {twMerge} from 'tailwind-merge';
-import {modalStateChanged} from '@/feautures/addition-targets-modal/ui/model/addition-target-model.ts';
+import { modalStateChanged } from '@/feautures/addition-targets-modal/ui/model/addition-target-model.ts';
+import {
+    Pencil1Icon,
+    PlusIcon,
+    TrashIcon,
+} from '@radix-ui/react-icons';
+import { ReactNode } from 'react';
+import { Button } from 'shared/ui/components/ui/button.tsx';
+import { twMerge } from 'tailwind-merge';
+import { rowRemoved } from 'widgets/script-timeline/model/script-timeline.ts';
 
 interface SidebarItemsProps {
-    id?: number;
+    id?: string;
     name?: string;
     children: ReactNode;
     ruler?: boolean;
 }
 
-export const SidebarItem = ({children, ruler = false}: SidebarItemsProps) => {
+export const SidebarItem = ({
+    children,
+    id,
+    ruler = false,
+}: SidebarItemsProps) => {
     const handleAddTargetClick = () => {
         modalStateChanged(true);
     };
@@ -20,7 +29,8 @@ export const SidebarItem = ({children, ruler = false}: SidebarItemsProps) => {
         <div
             className={twMerge(
                 'w-52 flex justify-between items-center gap-3 p-3 bg-[#18181b] rounded-l h-[60px]',
-                ruler && 'h-[40px] bg-sidebarBg border border-[#18181b]'
+                ruler &&
+                    'h-[40px] bg-sidebarBg border border-[#18181b]',
             )}>
             {ruler ? (
                 <div className="flex items-center justify-between gap-4">
@@ -39,7 +49,12 @@ export const SidebarItem = ({children, ruler = false}: SidebarItemsProps) => {
             )}
             {!ruler && (
                 <div className="flex gap-3">
-                    <Button size="icon">
+                    <Button
+                        size="icon"
+                        onClick={
+                            //@ts-ignore
+                            () => rowRemoved(id)
+                        }>
                         <TrashIcon />
                     </Button>
                     <Button size="icon">

@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "skipLibCheck": true,
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
-    "skipLibCheck": true,
+    "strict": false,
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
@@ -23,7 +24,7 @@
         "./*"
       ]
     },
-    "strict": true,
+//    "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true

@@ -1,6 +1,11 @@
-import {createEffect, createEvent, createStore, sample} from 'effector';
-import {createGate} from 'effector-react';
-import {Group} from 'shared/types/group.ts';
+import {
+    createEffect,
+    createEvent,
+    createStore,
+    sample,
+} from 'effector';
+import { createGate } from 'effector-react';
+import { Group } from 'shared/types/group.ts';
 
 const groupsMock: Group[] = [
     {
@@ -63,4 +68,10 @@ sample({
     target: $selectedGroup,
 });
 
-export {groupsGate, $groups, getGroupsFx, $selectedGroup, groupSelected};
+export {
+    $groups,
+    $selectedGroup,
+    getGroupsFx,
+    groupSelected,
+    groupsGate,
+};

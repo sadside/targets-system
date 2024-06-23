@@ -1,36 +1,14 @@
 import { createQuery } from '@farfetched/core';
-import { createEvent, createStore, sample } from 'effector';
+import { invoke } from '@withease/factories';
+import { sample } from 'effector';
 import { Target } from 'entities/target/api/target-api.ts';
+import {
+    getAllMapsQuery,
+    getAllScriptsQuery,
+    ScriptMock,
+} from 'pages/index-page/model/index-page-model.ts';
 import { api } from 'shared/api/model/api.ts';
-import { Script } from 'shared/types/script.ts';
-
-export const getAllScriptsQuery = createQuery({
-    handler: async () => {
-        // const res = await api.get('');
-
-        // return res.data;
-        const res = [
-            {
-                id: 1,
-                name: 'Утро в лесу',
-            },
-            {
-                id: 2,
-                name: 'Ночь на реке',
-            },
-            {
-                id: 3,
-                name: 'Дом',
-            },
-        ];
-
-        return new Promise(resolve =>
-            setTimeout(() => {
-                resolve(res);
-            }, 2000),
-        ).then(data => data as Target[]);
-    },
-});
+import { createSelect } from 'shared/ui/select/model/select-model.ts';
 
 export const getScriptByIdQuery = createQuery({
     handler: async (id: number) => {
@@ -48,36 +26,90 @@ export const deleteScriptByIdQuery = createQuery({
     },
 });
 
-export const saveScriptQuery = createQuery({
-    handler: async (id: number) => {
-        const res = await api.get('' + id);
+export const getScriptTargets = createQuery({
+    handler: async (id: number): Promise<Target[]> => {
+        //TODO поменять юрл
+        const res = await api.get<Target[]>(`/targets/${id}`);
 
         return res.data;
+
+        // return [
+        //     {
+        //         id: 1,
+        //         groupId: '1',
+        //         name: 'Статичная мишень',
+        //         shotToDie: 1,
+        //         navi: true,
+        //         posX: 100,
+        //         posY: 200,
+        //         type: TARGET_TYPE.Middle,
+        //         music: Music.None,
+        //         fire: true,
+        //         pointer: true,
+        //         moveSensor: true,
+        //         shotSensorType: ShotSensorType.SENSOR1,
+        //         valueSensor: 1,
+        //         status: TARGET_STATUSES.ONLINE_IDLE,
+        //         batteryLevel: 100,
+        //         position: 'UP',
+        //         state: TARGET_STATES.NO_ACTIVE,
+        //         image: '',
+        //     },
+        //     {
+        //         id: 2,
+        //         groupId: '1',
+        //         name: 'Тестовая мишень',
+        //         shotToDie: 2,
+        //         navi: false,
+        //         posX: 450,
+        //         posY: 666,
+        //         type: TARGET_TYPE.Little,
+        //         music: Music.None,
+        //         fire: false,
+        //         pointer: false,
+        //         moveSensor: false,
+        //         shotSensorType: ShotSensorType.SENSOR1,
+        //         valueSensor: 2,
+        //         status: TARGET_STATUSES.OFFLINE_IN_PROGRESS,
+        //         batteryLevel: 50,
+        //         position: 'DOWN',
+        //         state: TARGET_STATES.ACTIVE,
+        //         image: '',
+        //     },
+        // ];
     },
 });
 
-export const createScriptQuery = createQuery({
-    handler: async (id: number) => {
-        const res = await api.get('' + id);
+export const selectScriptModel = invoke(
+    createSelect<ScriptMock, 'name'>,
+    { renderField: 'name' },
+);
 
-        return res.data;
-    },
-});
+export const selectMapModel = invoke(
+    createSelect<ScriptMock, 'name'>,
+    { renderField: 'name' },
+);
 
-export const scriptSelected = createEvent<string>();
-
-export const $selectedScript = createStore<Script | null>(null);
-
-sample({
-    clock: scriptSelected,
-    fn: value => JSON.parse(value) as Script,
-    target: $selectedScript,
-});
+// logic
 
 sample({
-    clock: $selectedScript,
-    filter: script => Boolean(script),
-    //@ts-ignore
-    fn: (script: Script) => script.id,
-    target: getScriptByIdQuery.refresh,
+    clock: [
+        getAllScriptsQuery.finished.success,
+        getAllScriptsQuery.$data,
+    ],
+    source: getAllScriptsQuery.$data,
+    filter: scripts => scripts !== null,
+    target: selectScriptModel.$items,
+});
+
+sample({
+    clock: getAllScriptsQuery.$pending,
+    target: selectScriptModel.$loading,
+});
+
+sample({
+    clock: [getAllMapsQuery.finished.success, getAllMapsQuery.$data],
+    source: getAllMapsQuery.$data,
+    filter: scripts => scripts !== null,
+    target: selectMapModel.$items,
 });

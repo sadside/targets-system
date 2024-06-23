@@ -1,6 +1,5 @@
 import { MinusIcon, PlusIcon } from '@radix-ui/react-icons';
 import { useUnit } from 'effector-react';
-import { Target } from 'entities/target';
 import {
     Background,
     BackgroundVariant,
@@ -16,23 +15,12 @@ import {
     onNodesChange,
     setNodes,
 } from 'widgets/editor-map/model/editor-map-model.ts';
+import { ResizableNode } from 'widgets/editor-map/ui/resizable-node.tsx';
 import styles from './editor-map.module.scss';
 
 interface StaticMapProps {}
 
-export const targets: Target[] = [
-    {
-        id: 47,
-        type: 'ResizableNode',
-        position: { x: 50, y: 50 },
-        data: {
-            name: 'Дерево',
-            type: 'three',
-        },
-    },
-];
-
-const nodeTypes = { target: TargetNode };
+const nodeTypes = { target: TargetNode, relief: ResizableNode };
 
 export const EditorMap = ({}: StaticMapProps) => {
     UseClearMap();

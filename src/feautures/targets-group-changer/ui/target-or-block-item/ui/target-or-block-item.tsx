@@ -1,17 +1,34 @@
-import {Checkbox} from 'shared/ui/components/ui/checkbox.tsx';
+import {
+    targetAdded,
+    targetRemoved,
+} from 'pages/groups-page/model/groups-page.ts';
+import { Button } from 'shared/ui/components/ui/button.tsx';
 
 export interface TargetOrBlockItemProps {
     id: number;
     name: string;
+    free: boolean;
 }
 
-export const TargetOrBlockItem = ({id, name}: TargetOrBlockItemProps) => {
+export const TargetOrBlockItem = ({
+    id,
+    name,
+    free,
+}: TargetOrBlockItemProps) => {
     return (
-        <div className="bg-black h-10 flex items-center justify-between px-4 mb-2">
-            <div className="font-bold">
+        <div className="bg-black flex items-center justify-between p-2 mb-2">
+            <div className="font-bold text-lg">
                 {id}. {name}
             </div>
-            <Checkbox className="h-5 w-5" />
+            {free ? (
+                <Button onClick={() => targetAdded(id)}>
+                    Добавить в группу
+                </Button>
+            ) : (
+                <Button onClick={() => targetRemoved(id)}>
+                    Удалить из группы
+                </Button>
+            )}
         </div>
     );
 };

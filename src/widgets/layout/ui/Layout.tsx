@@ -1,5 +1,5 @@
-import {Sidebar} from 'widgets/sidebar';
-import {Outlet} from '@tanstack/react-router';
+import { Outlet } from '@tanstack/react-router';
+import { Sidebar } from 'widgets/sidebar';
 import styles from './Layout.module.scss';
 
 export const Layout = () => {
@@ -7,9 +7,9 @@ export const Layout = () => {
         <div className={styles.wrapper}>
             <Sidebar />
             <div className={styles.outlet}>
-                {/*<div className={styles.wrapperOutlet}>*/}
+                <div className={styles.wrapperOutlet}>
                     <Outlet />
-                {/*</div>*/}
+                </div>
             </div>
         </div>
     );

@@ -1,4 +1,6 @@
-import styles from './result-table.module.scss';
+import { ResultTableActions } from '@/feautures/result-table-actions';
+import { ResultTableFilter } from '@/feautures/result-table-filter';
+import { modalStateChanged } from 'pages/result-page/model/result-page.ts';
 import {
     Table,
     TableBody,
@@ -7,8 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from 'shared/ui/components/ui/table.tsx';
-import {ResultTableActions} from '@/feautures/result-table-actions';
-import {ResultTableFilter} from '@/feautures/result-table-filter';
+import styles from './result-table.module.scss';
 
 const data = [
     {
@@ -81,17 +82,31 @@ export const ResultTable = () => {
                                 <TableRow
                                     key={invoice.number}
                                     className="text-center">
-                                    <TableCell className="font-medium">
+                                    <TableCell
+                                        className="font-medium cursor-pointer"
+                                        onClick={() =>
+                                            modalStateChanged(true)
+                                        }>
                                         {invoice.number}
                                     </TableCell>
                                     <TableCell className="font-medium">
                                         {invoice.ups}
                                     </TableCell>
-                                    <TableCell>{invoice.shots_1}</TableCell>
-                                    <TableCell>{invoice.shots_2}</TableCell>
-                                    <TableCell>{invoice.shots_2}</TableCell>
-                                    <TableCell>{invoice.shots_2}</TableCell>
-                                    <TableCell>{invoice.correction}</TableCell>
+                                    <TableCell>
+                                        {invoice.shots_1}
+                                    </TableCell>
+                                    <TableCell>
+                                        {invoice.shots_2}
+                                    </TableCell>
+                                    <TableCell>
+                                        {invoice.shots_2}
+                                    </TableCell>
+                                    <TableCell>
+                                        {invoice.shots_2}
+                                    </TableCell>
+                                    <TableCell>
+                                        {invoice.correction}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>

@@ -27,7 +27,8 @@ export const ModeNotSelected = () => {
                         variant="secondary"
                         onClick={() =>
                             mapModeClicked(MAP_EDIT_MODE.EDIT)
-                        }>
+                        }
+                        disabled={true}>
                         Редактировать карту
                     </Button>
                 </div>

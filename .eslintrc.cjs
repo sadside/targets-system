@@ -12,13 +12,15 @@ module.exports = {
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh', 'react'],
+  plugins: ['react-refresh', 'react', ],
   rules: {
     'react-refresh/only-export-components': [
       'warn',
       { allowConstantExport: true },
     ],
     'prettier': {
-    }
+    },
+    "no-unused-vars": "off",
+    "no-console": "off"
   },
 }

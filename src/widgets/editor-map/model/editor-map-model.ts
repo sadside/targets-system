@@ -7,10 +7,20 @@ import { Target } from 'entities/target/api/target-api.ts';
 import { Node, NodeChange, applyNodeChanges } from 'reactflow';
 import { v4 as uuidv4 } from 'uuid';
 
+import { debug } from 'patronum';
+import { toast } from 'sonner';
 import {
+    $mapName,
     MAP_EDIT_MODE,
     allTargetsSelect,
+    createMap,
+    getMapById,
+    mapCreateBtnClicked,
+    mapCreated,
     mapModeSelected,
+    mapSaved,
+    mapSelect,
+    postMapQuery,
     reliefAddBtnClicked,
     targetAddBtnClicked,
 } from 'widgets/map-actions/model/map-actions.ts';
@@ -21,16 +31,21 @@ export enum FIGURE_TYPES {
     TRIANGLE,
 }
 
-type ReliefData = {
+export type ReliefData = {
     id: number;
     name: string;
     figure: FIGURE_TYPES;
     color: string;
+    posX: number;
+    posY: number;
+    width?: number;
+    height?: number;
 };
 
-interface EditorMapContent {
-    targets: Target[];
-    relief: any[];
+export interface Map {
+    id?: number;
+    name?: string;
+    relief: ReliefData[];
 }
 
 export const onNodesChange = createEvent<NodeChange[]>();
@@ -38,54 +53,57 @@ export const setNodes = createEvent<Node[]>();
 export const nodeAdded = createEvent<Target>();
 export const reliefAdded = createEvent<ReliefData>();
 
-export const $activeEditorMap = createStore<EditorMapContent | null>(
+export const $mapItemsFromServer = createStore<Map | null>(
     null,
 ).reset(mapModeSelected);
 
 export const $mapItems = createStore<Node[]>([]);
 
-$mapItems.watch(state => console.log(state));
-
 sample({
     clock: nodeAdded,
-    source: $activeEditorMap,
+    source: $mapItems,
     fn: (mapItems, newTarget) => {
-        if (!mapItems) {
-            return {
-                targets: [newTarget],
-                relief: [],
-            };
-        } else {
-            return {
-                ...mapItems,
-                targets: [...mapItems.targets, newTarget],
-            };
-        }
+        const item = {
+            id: String(newTarget.id),
+            type: 'target',
+            position: {
+                x: newTarget.posX,
+                y: newTarget.posY,
+            },
+            data: {
+                id: newTarget.id,
+                name: newTarget.name,
+            },
+        } as Node;
+
+        return [...mapItems, item];
     },
-    target: $activeEditorMap,
+    target: $mapItems,
 });
 
 sample({
     clock: reliefAdded,
-    source: $activeEditorMap,
+    source: $mapItems,
     fn: (mapItems, newReliefItem) => {
-        if (!mapItems) {
-            return {
-                targets: [],
-                relief: [newReliefItem],
-            };
-        } else {
-            return {
-                ...mapItems,
-                relief: [...mapItems.relief, newReliefItem],
-            };
-        }
+        const item = {
+            id: String(uuidv4()),
+            type: 'relief',
+            position: {
+                x: newReliefItem?.posX ?? 10,
+                y: newReliefItem?.posY ?? 10,
+            },
+            data: { ...newReliefItem },
+            width: newReliefItem.width ?? 100,
+            height: newReliefItem.height ?? 50,
+        } as Node<ReliefData>;
+
+        return [...mapItems, item];
     },
-    target: $activeEditorMap,
+    target: $mapItems,
 });
 
 sample({
-    source: $activeEditorMap,
+    source: $mapItemsFromServer.updates,
     fn: getNodesToRender,
     target: $mapItems,
 });
@@ -106,11 +124,23 @@ sample({
     clock: mapModeSelected,
     filter: mode => mode === MAP_EDIT_MODE.CREATE,
     fn: () => ({
-        targets: [],
         relief: [],
     }),
-    target: $activeEditorMap,
+    target: $mapItemsFromServer,
 });
+
+sample({
+    clock: mapSelect.itemSelected,
+    fn: map => map.id,
+    target: getMapById.start,
+});
+
+sample({
+    clock: getMapById.finished.success.map(data => data.result),
+    target: $mapItemsFromServer,
+});
+
+debug($mapItems);
 
 // reliefAddBtnClicked
 
@@ -132,39 +162,101 @@ sample({
     fn: (relief, figure) => ({
         ...(relief as Relief),
         figure,
+        posX: 10,
+        posY: 10,
     }),
     target: reliefAdded,
 });
 
-function getNodesToRender(data: EditorMapContent | null): Node[] {
+sample({
+    //@ts-ignore
+    clock: mapSaved,
+    source: {
+        currentMap: $mapItemsFromServer,
+        mapItems: $mapItems,
+    },
+    fn: ({ currentMap, mapItems }) => {
+        const relief: ReliefData[] = mapItems.map(relief => ({
+            ...relief.data,
+            width: relief.width,
+            height: relief.height,
+            posY: relief.position.y,
+            posX: relief.position.x,
+        }));
+
+        return {
+            //@ts-ignore
+            id: currentMap.id,
+            //@ts-ignore
+            name: currentMap.name,
+            relief,
+        } as Map;
+    },
+    target: postMapQuery.start,
+});
+
+sample({
+    //@ts-ignore
+    clock: mapCreated,
+    source: {
+        currentMap: $mapName,
+        mapItems: $mapItems,
+    },
+    fn: ({ currentMap, mapItems }) => {
+        const relief: ReliefData[] = mapItems.map(relief => ({
+            ...relief.data,
+            width: relief.width,
+            height: relief.height,
+            posY: relief.position.y,
+            posX: relief.position.x,
+        }));
+
+        return {
+            //@ts-ignore
+            name: currentMap,
+            relief,
+        } as Map;
+    },
+    target: postMapQuery.start,
+});
+
+sample({
+    clock: postMapQuery.finished.success,
+    fn: () => toast.success('Успешно!'),
+});
+
+sample({
+    clock: mapCreateBtnClicked,
+    source: {
+        relief: $mapItems,
+        name: $mapName,
+    },
+    fn: ({ relief, name }) => {
+        return {
+            name,
+            relief: relief.map(item => ({
+                ...item.data,
+                id: item.id,
+            })),
+        };
+    },
+    target: createMap.start,
+});
+
+function getNodesToRender(data: Map | null): Node[] {
     if (!data) return [];
 
-    const targets = data.targets.map(target => {
+    return data.relief.map((relief: ReliefData) => {
         return {
-            id: String(target.id),
-            type: 'target',
-            position: {
-                x: target.posX,
-                y: target.posY,
-            },
-            data: {
-                id: target.id,
-                name: target.name,
-            },
-        } as Node;
-    });
-
-    const reliefItems = data.relief.map((relief: ReliefData) => {
-        return {
-            id: String(uuidv4()),
+            id: String(relief.id),
             type: 'relief',
             position: {
-                x: 10,
-                y: 10,
+                x: relief?.posX,
+                y: relief?.posY,
             },
-            data: relief,
+            data: { ...relief },
+            width: relief.width,
+            height: relief.height,
         } as Node<ReliefData>;
     });
-
-    return [...targets, ...reliefItems];
 }

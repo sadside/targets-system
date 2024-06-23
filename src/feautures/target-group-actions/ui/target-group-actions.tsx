@@ -1,67 +1,47 @@
 // import styles from './groups-block.module.scss'
-import {TrashIcon} from '@radix-ui/react-icons';
+import { TrashIcon } from '@radix-ui/react-icons';
 
-import {useGate, useUnit} from 'effector-react';
 import {
-    $groups,
-    $selectedGroup,
-    getGroupsFx,
-    groupSelected,
-    groupsGate,
-} from 'entities/target-group';
-import {Button} from 'shared/ui/components/ui/button.tsx';
-import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
-} from 'shared/ui/components/ui/select.tsx';
+    groupDeleteBtnClicked,
+    groupSaveBtnClicked,
+    groupSelectModel,
+} from '@/feautures/target-group-actions/model/target-group-actions.ts';
+import { useGate } from 'effector-react';
+import { groupsGate } from 'entities/target-group';
+import { modalVisibleChanged } from 'pages/groups-page/model/create-group-model.ts';
+import { Button } from 'shared/ui/components/ui/button.tsx';
+import { Select } from 'shared/ui/select/ui/select.tsx';
 
 interface TargetGroupsActionsProps {}
 
 export const TargetGroupsActions = ({}: TargetGroupsActionsProps) => {
-    const groups = useUnit($groups);
-    const loading = useUnit(getGroupsFx.pending);
     useGate(groupsGate);
-    const selectedGroup = useUnit($selectedGroup);
-
-    const selectPlaceholder = loading ? 'Загрузка групп...' : 'Выберите группу';
-    const disableSelect = !groups || loading;
 
     return (
         <div className="bg-primary flex items-center p-4 justify-between mb-12 rounded">
-            <div className="font-normal mr-4">Название группы:</div>
+            <div className="font-normal mr-4">Выберите группу:</div>
             <Select
-                value={selectedGroup?.name}
-                onValueChange={name => groupSelected(name)}>
-                <SelectTrigger
-                    className="w-[180px] mr-4"
-                    disabled={disableSelect}>
-                    <SelectValue placeholder={selectPlaceholder}>
-                        {selectedGroup?.name || 'Группа'}
-                    </SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectGroup>
-                        <SelectLabel>Группы:</SelectLabel>
-                        {groups &&
-                            groups.map(group => (
-                                <SelectItem value={group.name} key={group.id}>
-                                    {group.name}
-                                </SelectItem>
-                            ))}
-                    </SelectGroup>
-                </SelectContent>
-            </Select>
-            <Button size="icon">
+                model={groupSelectModel}
+                placeholder="Выберите групу"
+                className="w-[200px]"
+                label="Группы"
+            />
+            <Button
+                size="icon"
+                onClick={() => groupDeleteBtnClicked()}>
                 <TrashIcon height={20} width={20} />
             </Button>
 
-            <Button className="h-9">Сохранить</Button>
-            <Button className="h-9">Создать группу</Button>
+            <Button
+                className="h-9"
+                onClick={() => groupSaveBtnClicked()}>
+                Сохранить
+            </Button>
+            <Button
+                className="h-9"
+                onClick={() => modalVisibleChanged(true)}>
+                Создать группу
+            </Button>
         </div>
     );
 };

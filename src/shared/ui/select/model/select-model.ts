@@ -9,20 +9,20 @@ import {
 import { Gate, createGate } from 'effector-react';
 
 export const createSelect = createFactory(
-    <Obj, Key extends keyof Obj>({
+    <T, Key extends keyof T>({
         renderField,
         items,
     }: {
         renderField: Key;
-        items?: Obj[] | null;
+        items?: T[] | null;
     }) => {
         const res = renderField;
-        const itemSelected = createEvent<Obj>();
+        const itemSelected = createEvent<T>();
         const visibleChanged = createEvent<boolean>();
         const reset = createEvent();
 
-        const $items = createStore<Obj[] | null>(items ?? null);
-        const $selectedItem = createStore<Obj | null>(null).reset(
+        const $items = createStore<T[] | null>(items ?? null);
+        const $selectedItem = createStore<T | null>(null).reset(
             reset,
         );
         const $selectIsVisible =
@@ -56,11 +56,6 @@ export const createSelect = createFactory(
             target: $selectIsVisible,
         });
 
-        sample({
-            clock: gate.close,
-            target: reset,
-        });
-
         return {
             itemSelected,
             $items,
@@ -79,6 +74,7 @@ export const testModel = invoke(
     createSelect<{ id: number; value: string }, 'value'>,
     { renderField: 'value' },
 );
+
 export type SelectModel<Obj, Key extends keyof Obj> = {
     itemSelected: EventCallable<Obj>;
     $items: StoreWritable<Obj[] | null>;

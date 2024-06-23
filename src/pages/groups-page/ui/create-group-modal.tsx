@@ -1,12 +1,13 @@
+import { useUnit } from 'effector-react';
 import {
-    $isModalVisible,
-    $scriptName,
+    $createModalIsVisible,
+    $groupColor,
+    $groupName,
     formSubmitted,
     inputChanged,
-    modalChanged,
-    modalClosed,
-} from '@/feautures/create-script/model/create-script-model.ts';
-import { useUnit } from 'effector-react';
+    inputColorChanged,
+    modalVisibleChanged,
+} from 'pages/groups-page/model/create-group-model.ts';
 import { Button } from 'shared/ui/components/ui/button.tsx';
 import {
     Dialog,
@@ -17,18 +18,19 @@ import {
 } from 'shared/ui/components/ui/dialog.tsx';
 import { Input } from 'shared/ui/components/ui/input.tsx';
 
-export const CreateScriptModal = () => {
-    const isOpen = useUnit($isModalVisible);
-    const value = useUnit($scriptName);
+export const CreateGroupModal = () => {
+    const isVisible = useUnit($createModalIsVisible);
+    const value = useUnit($groupName);
+    const color = useUnit($groupColor);
 
     return (
         <Dialog
-            onOpenChange={state => modalChanged(state)}
-            open={isOpen}>
+            open={isVisible}
+            onOpenChange={state => modalVisibleChanged(state)}>
             <DialogContent className="bg-sidebarBg border-0">
                 <DialogHeader>
                     <DialogTitle className="text-xl">
-                        Создание сценария.
+                        Создание Группы
                     </DialogTitle>
                     <DialogDescription className="text-white">
                         <p className="text-lg mb-3">
@@ -36,7 +38,7 @@ export const CreateScriptModal = () => {
                             создания сценария.
                         </p>
                         <p className="text-base mb-2">
-                            Название сценария:
+                            Название группы:
                         </p>
                         <Input
                             placeholder="Введите название сценария."
@@ -47,14 +49,26 @@ export const CreateScriptModal = () => {
                             }
                             id="name"
                         />
+                        <p className="text-base mb-2">Цвет группы:</p>
+                        <input
+                            type="color"
+                            className="rounded border-none mb-3"
+                            value={color}
+                            onChange={e =>
+                                inputColorChanged(e.target.value)
+                            }
+                        />
                         <div className="flex gap-3">
-                            <Button onClick={() => modalClosed()}>
+                            <Button
+                                onClick={() =>
+                                    modalVisibleChanged(false)
+                                }>
                                 Отмена
                             </Button>
                             <Button
                                 variant="secondary"
-                                onClick={() => formSubmitted()}
-                                disabled={!value}>
+                                disabled={!value}
+                                onClick={() => formSubmitted()}>
                                 Создать
                             </Button>
                         </div>

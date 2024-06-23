@@ -10,11 +10,13 @@ import {
 interface TargetsGroupProps {
     name: string | null;
     targets: Target[];
+    color: string;
 }
 
 export const TargetsGroup = ({
     name,
     targets,
+    color,
 }: TargetsGroupProps) => {
     return (
         <>
@@ -24,7 +26,9 @@ export const TargetsGroup = ({
                         <AccordionTrigger className="text-lg">
                             <div>
                                 Группа мишеней:
-                                <span className="font-bold">
+                                <span
+                                    className="font-bold"
+                                    style={{ color: color }}>
                                     {' '}
                                     {name}
                                 </span>
@@ -33,28 +37,14 @@ export const TargetsGroup = ({
                         <AccordionContent>
                             {targets.length
                                 ? targets.map(target => (
-                                      <TargetItem
-                                          id={target.id}
-                                          key={target.id}
-                                          // status={target.status}
-                                          // charge={target.charge}
-                                          // position={target.position}
-                                      />
+                                      <TargetItem target={target} />
                                   ))
                                 : 'Мишенней нет '}
                         </AccordionContent>
                     </AccordionItem>
                 </Accordion>
             ) : (
-                targets.map(target => (
-                    <TargetItem
-                        id={target.id}
-                        key={target.id}
-                        status={target.status}
-                        charge={target.charge}
-                        position={target.position}
-                    />
-                ))
+                targets.map(target => <TargetItem target={target} />)
             )}
         </>
     );

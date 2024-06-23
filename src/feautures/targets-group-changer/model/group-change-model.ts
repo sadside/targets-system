@@ -1,79 +1,55 @@
+import { createQuery } from '@farfetched/core';
 import { createStore, sample } from 'effector';
-import { Target } from 'entities/target';
-import { groupSelected } from 'entities/target-group';
-import { getAllTargetsQuery } from 'entities/target/model/target.ts';
+import {
+    Music,
+    ShotSensorType,
+    TARGET_STATES,
+    TARGET_TYPE,
+    Target,
+} from 'entities/target/api/target-api.ts';
+import { TARGET_STATUSES } from 'pages/index-page/types.ts';
 
-const freeTargetsMock: Target[] = [
-    {
-        id: 1,
-        position: { x: 0, y: 0 },
-        type: '24',
-        name: 'Дуб',
-        group: null,
+export const getFreeTargetsQuery = createQuery({
+    handler: async (): Promise<Target[]> => {
+        // const res = await api.get<Target[]>('/targets/Individual/');
+        // return res
+
+        return [
+            {
+                id: 2,
+                groupId: 1,
+                name: 'Статичная мишень',
+                shotToDie: 1,
+                navi: true,
+                posX: 100,
+                posY: 200,
+                type: TARGET_TYPE.Large,
+                music: Music.None,
+                fire: true,
+                pointer: true,
+                moveSensor: true,
+                shotSensorType: ShotSensorType.SENSOR1,
+                valueSensor: 1,
+                status: TARGET_STATUSES.ONLINE_IDLE,
+                batteryLevel: 100,
+                position: 'UP',
+                state: TARGET_STATES.NO_ACTIVE,
+                image: '',
+                groupName: '123',
+                goAfterDestroy: true,
+                heater: true,
+            },
+        ];
     },
-    {
-        id: 2,
-        type: '24',
-        name: 'Т-34',
-        position: { x: 550, y: 700 },
-        group: null,
-    },
-
-    {
-        id: 3,
-        type: '24',
-        name: 'Т-224',
-        position: { x: 250, y: 400 },
-        group: null,
-    },
-    {
-        id: 4,
-        type: '24',
-        name: 'Т-44',
-        position: { x: 350, y: 100 },
-        group: null,
-    },
-];
-
-// export const getTargetsByGroupFx = createEffect(async (group: Group) => {});
-
-export const $freeTargets = createStore<Target[] | null>(
-    freeTargetsMock,
-);
-export const $selectedGroupTargets = createStore<Target[]>([]);
-
-$selectedGroupTargets.watch(state => console.log(state));
-
-sample({
-    clock: groupSelected,
-    source: getAllTargetsQuery.$data,
-    fn: getTargetsByGroup,
-    target: $selectedGroupTargets,
 });
 
+// export const
+
+export const $freeTargets = createStore<Target[]>([]);
+
 sample({
-    clock: groupSelected,
-    source: getAllTargetsQuery.$data,
-    fn: getFreeTargets,
+    clock: getFreeTargetsQuery.finished.success.map(
+        res => res.result,
+    ),
     target: $freeTargets,
 });
-
-function getTargetsByGroup(targets: Target[] | null, group: string) {
-    const res: Target[] = [];
-
-    targets?.forEach(target => {
-        if (target?.group?.name === group) res.push(target);
-    });
-
-    return res;
-}
-
-function getFreeTargets(targets: Target[] | null) {
-    const res: Target[] = [];
-
-    targets?.forEach(target => {
-        if (target?.group === null) res.push(target);
-    });
-
-    return res;
-}
